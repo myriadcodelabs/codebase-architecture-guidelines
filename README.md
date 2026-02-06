@@ -2,7 +2,7 @@
 
 A small, opinionated set of architecture and directory-structure rules used to guide coding agents and human contributors.
 
-These documents are **normative** for projects that adopt them. They define how code should be organized and what architectural style should be followed per project type.
+These documents are **normative** for projects that adopt them. They define how code should be organized and what architectural style should be followed for each project type.
 
 ## What This Repository Contains
 
@@ -30,7 +30,15 @@ These files are intended to define:
 - architecture shape,
 - code placement intent.
 
-Implementation details, dependency choices, and control-flow decisions are left to the implementing agent unless a project explicitly adds extra rules.
+These files intentionally do not define:
+
+- dependency rules,
+- global concern policy,
+- state-management strategy,
+- data-flow strategy,
+- implementation techniques.
+
+Those decisions are left to the implementing agent unless a project adds extra rules.
 
 ## How To Use In Other Projects (Manual)
 
@@ -39,6 +47,9 @@ Implementation details, dependency choices, and control-flow decisions are left 
 3. Tell your coding agent these files are authoritative for that project.
 4. When this repo updates, re-copy the files you use.
 
-## Suggested Public Repo Name
+## Adaptations and Sharing
 
-`codebase-architecture-guidelines`
+- Pull requests are optional. You are not required to contribute changes back to this repository.
+- If you adapt these guidelines, please open an issue in this repo and link your adapted version (repo, gist, or docs URL).
+- Keep attribution to this repository in downstream copies and include a link to your adapted version so others can discover improvements.
+- See `CONTRIBUTING.md` for the contribution and adaptation policy.
