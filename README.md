@@ -47,6 +47,40 @@ Those decisions are left to the implementing agent unless a project adds extra r
 3. Tell your coding agent these files are authoritative for that project.
 4. When this repo updates, re-copy the files you use.
 
+## CLI Usage (npm Global Install)
+
+You can install this package globally and copy guideline directories into your current project path.
+
+1. Install globally:
+
+```bash
+npm install -g codebase-architecture-guidelines
+```
+
+2. From your target project root, run with directory-level targets:
+
+```bash
+codebase-guidelines copy backend
+codebase-guidelines copy frontend browser-extension
+```
+
+Valid targets:
+
+```bash
+backend
+frontend
+browser-extension
+```
+
+Each command copies selected directories into:
+`<current-working-directory>/codebase-architecture-guidelines/`
+
+3. Overwrite existing copied directories:
+
+```bash
+codebase-guidelines copy backend --force
+```
+
 ## Adaptations and Sharing
 
 - Pull requests are optional. You are not required to contribute changes back to this repository.

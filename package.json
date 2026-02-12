@@ -1,0 +1,25 @@
+{
+  "name": "codebase-architecture-guidelines",
+  "version": "1.0.0",
+  "description": "CLI to copy architecture guideline files and directories into a target project.",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "codebase-guidelines": "bin/codebase-guidelines.js",
+    "cbag": "bin/codebase-guidelines.js"
+  },
+  "files": [
+    "bin/",
+    "backend/",
+    "frontend/",
+    "browser-extension/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node bin/codebase-guidelines.js --help"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
