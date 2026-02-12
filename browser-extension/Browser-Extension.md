@@ -13,7 +13,7 @@ Its goal is to make it immediately obvious:
 - how responsibilities are separated
 
 It **does not**:
-- mandate architectural patterns
+- by itself mandate architectural patterns
 - imply the use of events, flows, or messaging
 - dictate how logic should be implemented
 
@@ -120,3 +120,37 @@ This document intentionally avoids:
 - influencing design decisions
 
 Its purpose is **structural clarity only**.
+
+---
+
+## Companion Documents
+
+For full governance, the following companion guides are mandatory.
+
+Path note:
+- In this source repo, use `browser-extension/...`.
+- In copied package output, use `codebase-architecture-guidelines/browser-extension/...`.
+
+Companion files:
+- `browser-extension/Module-Boundaries.md` or `codebase-architecture-guidelines/browser-extension/Module-Boundaries.md`
+- `browser-extension/Dependency-Boundaries.md` or `codebase-architecture-guidelines/browser-extension/Dependency-Boundaries.md`
+- `browser-extension/Architecture-Patterns.md` or `codebase-architecture-guidelines/browser-extension/Architecture-Patterns.md`
+- `browser-extension/Test.md` or `codebase-architecture-guidelines/browser-extension/Test.md`
+- `browser-extension/Refactoring.md` or `codebase-architecture-guidelines/browser-extension/Refactoring.md`
+
+---
+
+## Precedence
+
+When rules overlap, apply documents in this order:
+1. `browser-extension/Architecture-Patterns.md` (or copied path equivalent)
+2. `browser-extension/Dependency-Boundaries.md` (or copied path equivalent)
+3. `browser-extension/Module-Boundaries.md` (or copied path equivalent)
+4. `browser-extension/Test.md` (or copied path equivalent)
+5. `browser-extension/Refactoring.md` (or copied path equivalent)
+6. `browser-extension/Browser-Extension.md` (or copied path equivalent)
+
+Interpretation rule:
+- `Browser-Extension.md` governs structure and placement.
+- Companion documents govern architecture constraints, dependency direction,
+  testing policy, and safe refactoring behavior.

@@ -1,0 +1,263 @@
+# Browser Extension Test Instructions (LLM-Guided)
+(Behavioral Testing & Safe Automation Rules)
+
+## Purpose
+
+This document defines **how tests are created, evolved, and maintained**
+in this browser extension codebase when using AI-assisted development.
+
+These rules are **normative** and reflect the author's testing philosophy.
+
+This file exists to:
+- preserve behavioral intent
+- keep tests stable under refactoring
+- prevent silent semantic drift
+- make LLM-assisted coding predictable and safe
+
+---
+
+## Scope Boundary
+
+This document:
+- defines **testing intent, semantics, and automation rules**
+- applies only to **browser extension tests**
+- governs **how LLMs may interact with tests**
+
+This document does **not**:
+- define architecture or directory structure
+- mandate testing frameworks or tools
+- require TDD
+- define coverage targets
+- prescribe mocking libraries or styles
+
+---
+
+## Core Principles
+
+### 1. Tests Encode Intent, Not Structure
+
+- Tests represent **human-declared behavioral guarantees**
+- Tests are **commitments**, not experiments
+- Tests must not be inferred from code structure alone
+
+LLMs must never invent, assume, or widen behavior.
+
+---
+
+### 2. Definition of a Unit Test
+
+A **unit test** is defined by **behavioral scope**, not by execution surface.
+
+A unit test:
+- asserts **one externally meaningful behavioral guarantee**
+- may execute with:
+  - real browser-like APIs or harnessed runtime facades
+  - real extension storage adapters
+  - real message serialization logic
+- is still a unit test if it verifies **one behavior**
+
+Unit tests are **behavioral**, not structural.
+
+---
+
+### 3. Definition of an Integration Test
+
+An **integration test** verifies **composition of multiple behaviors**
+across extension boundaries.
+
+Integration tests:
+- assert interaction between independent guarantees
+- commonly span extension layers such as:
+  - `ui` <-> `flows`
+  - `flows` <-> `contexts/background` adapters
+  - message producers <-> message handlers
+- are **explicit and intentional**
+- must never be inferred automatically
+
+Use of extension runtime shims or real storage alone does not imply integration testing.
+
+---
+
+## Behavior Declaration Rules
+
+- Behavior is **human-owned**
+- LLMs must not infer behavior from:
+  - file names
+  - message type names
+  - command/action labels
+  - manifest entries
+
+New behavior:
+- requires explicit human declaration
+- results in **new tests**
+- does not modify existing test intent
+
+---
+
+## Test Evolution Rules
+
+### Additive Evolution Only
+
+- Existing tests must retain their original intent
+- New behavior -> new test
+- Old tests are never implicitly re-scoped or reclassified
+
+### Reclassification Policy
+
+- Tests must **never** be reclassified automatically
+- Reclassification is allowed **only** via explicit human instruction
+- LLMs may suggest candidates for reclassification, but must not apply it
+
+---
+
+## LLM Automation Rules (Critical)
+
+### What LLMs MAY Do Automatically
+
+- Fix production code to satisfy failing tests
+- Repair **mechanical aspects** of tests:
+  - setup
+  - wiring
+  - fixtures
+  - data builders
+  - message stubs
+  - imports and renames
+
+### What LLMs MUST NOT Do Automatically
+
+- Change assertions
+- Change expected values
+- Remove assertions
+- Add new assertions
+- Broaden or weaken guarantees
+- Change the semantic meaning of a test
+
+### Invariant
+
+> **Assertions are sacred. Setup is negotiable.**
+
+If a test cannot be repaired without changing assertions,
+human intervention is required.
+
+---
+
+## Handling Failing Tests
+
+Default rule:
+1. A test fails
+2. Assume test intent is correct
+3. Fix production code
+
+Only with explicit human instruction may the LLM:
+- change test intent
+- update assertions
+- remove or replace tests
+
+---
+
+## Extension-Specific Testing Areas
+
+### Context Isolation
+
+- Test context-specific behavior in its own boundary:
+  - page/content context
+  - extension UI context (popup/options)
+  - background/service-worker context
+- Do not merge unrelated context guarantees into one test.
+
+### Messaging Contracts
+
+- Treat message payloads and response contracts as behavior.
+- Validate:
+  - routing to correct handler
+  - payload validation behavior
+  - failure behavior for unknown/invalid messages
+
+### Runtime Adapters
+
+- Browser/runtime APIs (`chrome.*`, `browser.*`, DOM APIs) should be tested at adapter boundaries.
+- Flow/domain tests consume ports/contracts, not concrete runtime APIs.
+
+### Storage and Persistence
+
+- If behavior depends on persistence semantics (merge, overwrite, migration),
+  test with realistic storage behavior rather than hand-waved mocks.
+
+---
+
+## Mocking & Real Behavior Policy
+
+### Primary Decision Axis
+
+> **What uncertainty is this test meant to eliminate?**
+
+Mocking vs real behavior is decided **after** this question.
+
+---
+
+### Rule Correctness Tests
+
+- Prefer **real behavior**
+- Avoid mocks
+- Use real implementations
+- Infrastructure is part of behavior if behavior depends on it
+
+Mocking core flow/domain policy is forbidden.
+
+---
+
+### Composition Tests
+
+- Mock **trusted boundaries only**
+- Each mock represents an already-tested behavior
+- Assert outcomes, not implementation details
+
+---
+
+### Runtime/Adapter Tests
+
+- Prefer realistic runtime facades or targeted integration harnesses
+- Keep scope narrow and deterministic
+- Do not replace adapter behavior with empty stubs when adapter behavior is the point
+
+---
+
+## Mocking Prohibitions
+
+LLMs must not:
+- mock the unit under test
+- mock flow/domain policy in order to "make tests pass"
+- mock message validation behavior when message correctness is the behavior
+- mock persistence when persistence semantics are the behavior
+
+---
+
+## Decision Rule for Mocking
+
+Before mocking a dependency, ask:
+
+> **If this dependency were wrong, would this test catch it?**
+
+- If yes -> do NOT mock
+- If no -> mocking is acceptable
+
+---
+
+## MVP Testing Guidance
+
+- MVP tests focus on **minimal guarantees**
+- One behavioral unit test per core capability is usually sufficient
+- Tests should assert only what is explicitly promised
+
+Behavior growth is additive.
+
+---
+
+## Final Invariant
+
+> **LLMs translate declared intent into code.**
+> **They do not invent intent.**
+> **They do not weaken intent.**
+> **They do not silently change intent.**
+
+All automation must preserve this invariant.
