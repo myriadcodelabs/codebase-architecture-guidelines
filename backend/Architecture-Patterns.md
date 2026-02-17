@@ -53,6 +53,19 @@ Recommended placement:
 
 ---
 
+## Boundary Translation Policy
+
+Required:
+- Boundary-shape translation must happen at architecture boundaries.
+- Transport contracts (request/response/message DTOs) must not leak into domain models.
+- Use-case orchestration may coordinate translation, but domain rules must not depend on transport contract types.
+
+Recommended:
+- Keep translation mechanisms centralized and consistent per boundary (e.g., dedicated mapper modules/functions).
+- Prefer explicit mapping over implicit field sharing when crossing boundaries.
+
+---
+
 ## DDD Alignment Policy
 
 Required for backend modules:
@@ -79,6 +92,19 @@ Pattern usage rules:
 - Do not introduce a pattern if it increases abstraction cost without reducing risk.
 
 Do not force tactical DDD ceremony or generic pattern ceremony for simple capabilities.
+
+---
+
+## Complexity Control Policy
+
+Required:
+- Prefer the smallest design that satisfies current behavior and boundary constraints.
+- Introduce new abstraction layers only when they reduce concrete change risk.
+
+Review triggers:
+- adding intermediate models/types that mirror existing domain contracts without clear boundary value
+- creating orchestration/policy duplication across layers
+- introducing framework-driven patterns that increase abstraction cost without ownership clarity
 
 ---
 

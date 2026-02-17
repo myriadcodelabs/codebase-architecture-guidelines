@@ -37,11 +37,13 @@ Baseline requirement:
 - Use-case orchestration and policy coordination.
 - Coordinates domain operations and integration through ports.
 - Must not depend on concrete infrastructure adapters.
+- Must not own core domain invariants or domain state-transition rules.
 
 ### `domain/`
 - Domain rules, invariants, and core business behavior.
 - Independent from transport and infrastructure concerns.
 - Must not depend on runtime/framework APIs.
+- Owns validation and state transition logic for domain models.
 
 ### `infrastructure/`
 - Runtime/integration adapters for persistence, networking, queues, files, etc.

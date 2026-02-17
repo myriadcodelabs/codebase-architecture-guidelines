@@ -101,6 +101,9 @@ Disallowed cross-module interaction mechanisms:
 - bypassing contracts with deep imports into internal module folders
 - sharing mutable business state through `shared/*`
 
+Persistence-specific rule:
+- Cross-capability persistence relationships must use stable references/contracts (e.g., IDs or explicit boundary contracts), not direct imports of another capability's internal persistence model types.
+
 ---
 
 ## Anti-Coupling Rules
