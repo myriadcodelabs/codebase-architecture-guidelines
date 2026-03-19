@@ -25,10 +25,27 @@ This document:
 
 This document does **not**:
 - define architecture or directory structure
+- require production-code package mirroring for tests
 - mandate testing frameworks or tools
 - require TDD
 - define coverage targets
 - prescribe mocking libraries or styles
+
+---
+
+## Terminology Neutrality
+
+These rules are architecture-neutral and apply across backend styles
+(for example: layered, onion, hexagonal, clean, DDD-oriented variants).
+
+Term aliases used in this document:
+- `domain` means business-core rules/logic layer.
+- `application` means use-case/service orchestration layer.
+- `infrastructure` means adapter/runtime integration layer.
+
+Interpretation rule:
+- If a project uses different names, map these terms to the project's equivalent layers.
+- Semantics matter more than folder or class names.
 
 ---
 
@@ -64,7 +81,7 @@ LLMs must preserve both axes intentionally. Neither axis may be inferred from na
 ### Pure Logic Scope
 
 Use pure tests (no application/runtime context) for deterministic logic guarantees such as:
-- domain invariants
+- business-rule invariants
 - validation rules
 - pure transformations and conversions
 - static utilities
@@ -80,6 +97,25 @@ Use boundary-isolated tests when behavior depends on interaction with collaborat
 ### Composed Runtime Scope
 
 Use composed-runtime tests when behavior depends on real composition semantics (wiring, persistence semantics, transport semantics, lifecycle, transactions, or equivalent runtime behavior).
+
+---
+
+## Boundary Integrity Requirement (Mandatory)
+
+Behavioral tests are required but not sufficient.
+Critical architecture boundaries must also have direct boundary-focused tests.
+
+Required boundary groups:
+- mapping/translation boundaries (contract <-> business core, business core <-> persistence, message <-> business core)
+- business core <-> infrastructure interaction boundaries
+- transport/api <-> use-case orchestration boundaries
+- event/message contract boundaries
+
+Rules:
+- At least one direct test must exist for each declared critical boundary.
+- Boundary tests must assert semantic correctness, not only type/shape compatibility.
+- Boundary tests must include edge-case inputs relevant to that boundary (null/empty/optional/default/enum/range cases where applicable).
+- Composed-runtime and end-to-end tests do not replace direct boundary tests.
 
 ---
 
@@ -158,6 +194,28 @@ If a deterministic rule exists, it must have at least one direct pure test at th
 Test location and naming must not claim stronger isolation than the test actually uses.
 
 If a test uses composed runtime, it must be identified as composition/flow/integration in naming and placement conventions used by the repository.
+
+### 8. Behavior-First Test Organization (Mandatory for New Tests)
+
+New tests must be organized by **declared system behavior first**, not by production package or class layout.
+The main purpose of tests is to verify that the system does what we intend it to do.
+
+Required rule:
+- create and use a dedicated behavior-first test directory (for example: `src/test/.../behavior/`).
+- group tests by behavior domain/capability/journey (for example: `order-placement`, `refund-processing`, `access-control`), not by `controller/service/repository` mirrors.
+
+Framework-neutral note:
+- do **not** auto-generate test folders that mirror production source structure as the primary organization strategy.
+- structural placement is allowed only when needed for language/framework visibility constraints, and behavior grouping must still remain the primary organization signal.
+
+Retention rule:
+- existing verification coverage remains required: boundary tests, contract tests, mapper/translator tests, integration composition tests, and non-functional guarantees.
+- behavior-first organization adds clarity of system intent; it does not remove or weaken direct boundary verification obligations.
+
+Migration rule:
+- existing tests do not need immediate relocation.
+- all newly added tests must follow behavior-first organization.
+- gradual migration of older structure-mirrored tests is recommended when touched.
 
 ---
 
@@ -242,12 +300,12 @@ Only with explicit human instruction may the LLM:
 
 ### Domain Invariant Guarantees
 
-- Treat domain invariants as primary behavioral guarantees.
+- Treat business-core invariants as primary behavioral guarantees.
 - Validate invariant behavior on valid, invalid, and edge-case inputs.
 
 ### Application Orchestration Guarantees
 
-- Validate use-case ordering, branching, and side-effect orchestration.
+- Validate use-case/service-layer ordering, branching, and side-effect orchestration.
 - Validate idempotency and retry behavior where declared.
 
 ### Contract Guarantees
@@ -290,7 +348,7 @@ Mocking vs real behavior is decided **after** this question.
 - Use real implementations
 - Infrastructure is part of behavior if behavior depends on it
 
-Mocking domain logic is forbidden.
+Mocking business-core logic is forbidden.
 
 ---
 
@@ -313,7 +371,7 @@ Mocking domain logic is forbidden.
 
 LLMs must not:
 - mock the unit under test
-- mock domain rules or validators
+- mock business-core rules or validators
 - mock persistence when persistence semantics are the behavior
 - mock contract boundaries when contract correctness is the behavior
 
@@ -337,6 +395,7 @@ Prefer focused behavior tests over broad implementation snapshots.
 Minimum gate for release candidates:
 - Critical backend journeys must pass end-to-end/system tests.
 - Declared API/event/storage contract tests must pass.
+- Declared critical boundary-integrity tests must pass.
 - Declared performance/SLO budgets must pass.
 - Declared security behavior guarantees must pass.
 - No known failing high-severity tests may be waived without explicit human approval.
