@@ -31,6 +31,10 @@ This document does **not**:
 - define coverage targets
 - prescribe mocking libraries or styles
 
+Companion traceability rule:
+- test planning and test-change visibility artifacts are defined in `backend/Test-Traceability.md`.
+- those artifacts are mandatory for backend feature work.
+
 ---
 
 ## Terminology Neutrality
@@ -289,10 +293,12 @@ Default rule:
 2. Assume test intent is correct
 3. Fix production code
 
-Only with explicit human instruction may the LLM:
-- change test intent
-- update assertions
-- remove or replace tests
+Test intent change policy:
+- changes to test intent must be declared during planning in `backend/test-trace/plans/<FEATURE_ID>.plan.md`
+- modified/removed tests must be listed as `modify-candidate` or `remove-candidate` in phase-3 planning
+- final outcome and reason must be recorded in:
+  - `backend/test-trace/final/<FEATURE_ID>.final.md`
+  - `backend/test-trace/changes/<FEATURE_ID>.changes.md`
 
 ---
 
@@ -435,3 +441,14 @@ Behavior growth is additive.
 > **They do not silently change intent.**
 
 All automation must preserve this invariant.
+
+* * *
+
+## Feature-Contract Testing Workflow (Mandatory for Non-Trivial Features)
+
+For every non-trivial backend feature, tests must be generated from a visible feature contract.
+
+Before generating tests or production code, the LLM must read and follow:
+
+```text
+backend/Feature-Contracts.md
