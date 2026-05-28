@@ -72,6 +72,9 @@ Gate:
    - contract/boundary guarantees
    - system/non-functional guarantees when risk requires
 3. If existing tests must change/remove, declare that before generation.
+4. Enforce real-context-first policy:
+   - service/application/domain logic must be planned with deterministic real-context tests first
+   - API-boundary mocks (if any) may be planned only after real-context service logic coverage exists
 
 Gate:
 - No generation until phase-3 output approved.
@@ -81,6 +84,7 @@ Gate:
 1. Generate tests in planned inside-out order.
 2. Implement code to satisfy declared/planned tests.
 3. Preserve architecture boundaries during edits.
+4. Do not mirror legacy mock-heavy style from existing tests when it conflicts with deterministic real-context-first policy.
 
 Mode gate:
 - `review`/`validate`/`analyze`: phase 4 must be `NO-OP`.

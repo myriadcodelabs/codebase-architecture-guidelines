@@ -347,6 +347,9 @@ Mocking vs real behavior is decided **after** this question.
 - Avoid mocks
 - Use real implementations
 - Infrastructure is part of behavior if behavior depends on it
+- Prefer deterministic tests that may use real application context when needed
+- Existing mock-heavy test patterns are not normative for new tests
+- LLM must not copy mocking style from legacy tests when it reduces confidence
 
 Mocking business-core logic is forbidden.
 
@@ -374,6 +377,9 @@ LLMs must not:
 - Mock **trusted boundaries only**
 - Each mock represents an already-tested behavior
 - Assert outcomes, not implementation details
+- Mocks are allowed primarily for API-based/external boundary logic
+- API-boundary mocks are allowed only after service/application/domain logic is covered with real deterministic context tests
+- If service/business path is not yet covered in real context, mocking that path is forbidden
 
 ---
 
