@@ -3,6 +3,10 @@
 
 This file defines orchestration when a project uses multiple guideline domains together (for example: backend + frontend).
 
+Path note:
+- In this source repo, use paths like `backend/...`, `frontend/...`, `browser-extension/...`.
+- In installed copied output, use `codebase-architecture-guidelines/backend/...`, `codebase-architecture-guidelines/frontend/...`, `codebase-architecture-guidelines/browser-extension/...`.
+
 ## Scope
 
 - Use this file as top-level router.
@@ -10,9 +14,9 @@ This file defines orchestration when a project uses multiple guideline domains t
 
 ## Domain Delegation
 
-- Backend work: follow `backend/AGENTS.md` as authoritative execution path.
-- Frontend work: follow `frontend/FrontEnd.md` and companion frontend docs (`Architecture-Patterns.md`, `Dependency-Boundaries.md`, `Module-Boundaries.md`, `Test.md`, `Refactoring.md`).
-- Browser extension work: follow `browser-extension/Browser-Extension.md` and companion extension docs.
+- Backend work: follow `backend/AGENTS.md` or `codebase-architecture-guidelines/backend/AGENTS.md` as authoritative execution path.
+- Frontend work: follow `frontend/FrontEnd.md` or `codebase-architecture-guidelines/frontend/FrontEnd.md` and companion frontend docs (`Architecture-Patterns.md`, `Dependency-Boundaries.md`, `Module-Boundaries.md`, `Test.md`, `Refactoring.md`).
+- Browser extension work: follow `browser-extension/Browser-Extension.md` or `codebase-architecture-guidelines/browser-extension/Browser-Extension.md` and companion extension docs.
 
 ## Multi-Domain Feature Flow
 
@@ -25,7 +29,7 @@ This file defines orchestration when a project uses multiple guideline domains t
 ## Backend Reference
 
 For any backend-involved feature, run backend sequence from:
-- `backend/AGENTS.md`
+- `backend/AGENTS.md` or `codebase-architecture-guidelines/backend/AGENTS.md`
 
 Backend-local gates and traceability requirements are mandatory and not optional in multi-domain mode.
 
@@ -34,4 +38,3 @@ Backend-local gates and traceability requirements are mandatory and not optional
 When top-level and domain-level instructions overlap:
 - domain-local file is authoritative for that domain's implementation details.
 - this file only coordinates ordering and cross-domain routing.
-

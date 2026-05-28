@@ -3,14 +3,18 @@
 
 This file defines full sequence for backend feature generation.
 
+Path note:
+- In this source repo, use `backend/...`.
+- In installed copied output, use `codebase-architecture-guidelines/backend/...`.
+
 Companion docs used in order:
-1. `backend/Feature-Contracts.md`
-2. `backend/Architecture-Patterns.md`
-3. `backend/Dependency-Boundaries.md`
-4. `backend/Module-Boundaries.md`
-5. `backend/Test_Backend.md`
-6. `backend/Test-Traceability.md`
-7. `backend/Refactoring.md`
+1. `backend/Feature-Contracts.md` or `codebase-architecture-guidelines/backend/Feature-Contracts.md`
+2. `backend/Architecture-Patterns.md` or `codebase-architecture-guidelines/backend/Architecture-Patterns.md`
+3. `backend/Dependency-Boundaries.md` or `codebase-architecture-guidelines/backend/Dependency-Boundaries.md`
+4. `backend/Module-Boundaries.md` or `codebase-architecture-guidelines/backend/Module-Boundaries.md`
+5. `backend/Test_Backend.md` or `codebase-architecture-guidelines/backend/Test_Backend.md`
+6. `backend/Test-Traceability.md` or `codebase-architecture-guidelines/backend/Test-Traceability.md`
+7. `backend/Refactoring.md` or `codebase-architecture-guidelines/backend/Refactoring.md`
 
 ## Phase 0: Intake
 
@@ -49,7 +53,7 @@ Gate:
 
 ## Phase 3: Test Intent Planning (Visibility Layer, Before Code)
 
-1. Create `backend/test-trace/plans/<FEATURE_ID>.plan.md`.
+1. Create `backend/test-trace/plans/<FEATURE_ID>.plan.md` or `codebase-architecture-guidelines/backend/test-trace/plans/<FEATURE_ID>.plan.md`.
 2. Define planned tests from contract behavior:
    - top-down behavior mapping
    - inside-out execution order
@@ -81,11 +85,11 @@ Architecture checks during implementation:
 
 ## Phase 5: Finalize Test Traceability Artifacts
 
-1. Update `backend/test-trace/final/<FEATURE_ID>.final.md`:
+1. Update `backend/test-trace/final/<FEATURE_ID>.final.md` or `codebase-architecture-guidelines/backend/test-trace/final/<FEATURE_ID>.final.md`:
    - planned-to-final mapping
    - finalized tests with I/O examples
    - status (`added`/`modified`/`unchanged`/`removed`)
-2. Update `backend/test-trace/changes/<FEATURE_ID>.changes.md`:
+2. Update `backend/test-trace/changes/<FEATURE_ID>.changes.md` or `codebase-architecture-guidelines/backend/test-trace/changes/<FEATURE_ID>.changes.md`:
    - added tests
    - modified tests with semantic deltas
    - removed tests with reason
