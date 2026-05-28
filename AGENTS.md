@@ -4,8 +4,7 @@
 This file defines orchestration when a project uses multiple guideline domains together (for example: backend + frontend).
 
 Path note:
-- In this source repo, use paths like `backend/...`, `frontend/...`, `browser-extension/...`.
-- In installed copied output, use `codebase-architecture-guidelines/backend/...`, `codebase-architecture-guidelines/frontend/...`, `codebase-architecture-guidelines/browser-extension/...`.
+- Use installed copied output paths: `codebase-architecture-guidelines/...`.
 
 ## Scope
 
@@ -14,9 +13,9 @@ Path note:
 
 ## Domain Delegation
 
-- Backend work: follow `backend/AGENTS.md` or `codebase-architecture-guidelines/backend/AGENTS.md` as authoritative execution path.
-- Frontend work: follow `frontend/FrontEnd.md` or `codebase-architecture-guidelines/frontend/FrontEnd.md` and companion frontend docs (`Architecture-Patterns.md`, `Dependency-Boundaries.md`, `Module-Boundaries.md`, `Test.md`, `Refactoring.md`).
-- Browser extension work: follow `browser-extension/Browser-Extension.md` or `codebase-architecture-guidelines/browser-extension/Browser-Extension.md` and companion extension docs.
+- Backend work: follow `codebase-architecture-guidelines/backend/AGENTS.md` as authoritative execution path.
+- Frontend work: follow `codebase-architecture-guidelines/frontend/AGENTS.md` as authoritative execution path.
+- Browser extension work: follow `codebase-architecture-guidelines/browser-extension/Browser-Extension.md` and companion extension docs.
 
 ## Multi-Domain Feature Flow
 
@@ -37,9 +36,16 @@ For every command type (`review`, `validate`, `test`, `write`, `rewrite`, `refac
 ## Backend Reference
 
 For any backend-involved feature, run backend sequence from:
-- `backend/AGENTS.md` or `codebase-architecture-guidelines/backend/AGENTS.md`
+- `codebase-architecture-guidelines/backend/AGENTS.md`
 
 Backend-local gates are mandatory and not optional in multi-domain mode.
+
+## Frontend Reference
+
+For any frontend-involved feature, run frontend sequence from:
+- `codebase-architecture-guidelines/frontend/AGENTS.md`
+
+Frontend-local gates are mandatory and not optional in multi-domain mode.
 
 ## Conflict Rule
 

@@ -146,27 +146,26 @@ Its purpose is **structural clarity only**.
 For full governance, the following companion guides are mandatory.
 
 Path note:
-- In this source repo, use `frontend/...`.
-- In copied package output, use `codebase-architecture-guidelines/frontend/...`.
+- Use installed copied output paths: `codebase-architecture-guidelines/frontend/...`.
 
 Companion files:
-- `frontend/Module-Boundaries.md` or `codebase-architecture-guidelines/frontend/Module-Boundaries.md`
-- `frontend/Dependency-Boundaries.md` or `codebase-architecture-guidelines/frontend/Dependency-Boundaries.md`
-- `frontend/Architecture-Patterns.md` or `codebase-architecture-guidelines/frontend/Architecture-Patterns.md`
-- `frontend/Test.md` or `codebase-architecture-guidelines/frontend/Test.md`
-- `frontend/Refactoring.md` or `codebase-architecture-guidelines/frontend/Refactoring.md`
+- `codebase-architecture-guidelines/frontend/Module-Boundaries.md`
+- `codebase-architecture-guidelines/frontend/Dependency-Boundaries.md`
+- `codebase-architecture-guidelines/frontend/Architecture-Patterns.md`
+- `codebase-architecture-guidelines/frontend/Test.md`
+- `codebase-architecture-guidelines/frontend/Refactoring.md`
 
 ---
 
 ## Precedence
 
 When rules overlap, apply documents in this order:
-1. `frontend/Architecture-Patterns.md` (or copied path equivalent)
-2. `frontend/Dependency-Boundaries.md` (or copied path equivalent)
-3. `frontend/Module-Boundaries.md` (or copied path equivalent)
-4. `frontend/Test.md` (or copied path equivalent)
-5. `frontend/Refactoring.md` (or copied path equivalent)
-6. `frontend/FrontEnd.md` (or copied path equivalent)
+1. `codebase-architecture-guidelines/frontend/Architecture-Patterns.md`
+2. `codebase-architecture-guidelines/frontend/Dependency-Boundaries.md`
+3. `codebase-architecture-guidelines/frontend/Module-Boundaries.md`
+4. `codebase-architecture-guidelines/frontend/Test.md`
+5. `codebase-architecture-guidelines/frontend/Refactoring.md`
+6. `codebase-architecture-guidelines/frontend/FrontEnd.md`
 
 Interpretation rule:
 - `FrontEnd.md` governs structure and placement.
