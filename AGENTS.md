@@ -23,15 +23,23 @@ Path note:
 1. Identify feature slices by domain (`backend`, `frontend`, `browser-extension`).
 2. Create domain contracts/plans before implementation in each impacted domain.
 3. Execute each domain using its own local rules and test policy.
-4. Keep traceability artifacts per domain (do not merge backend and frontend trace files into one mixed artifact).
-5. Integrate at boundary contracts (API/schema/message) after domain-level checks are complete.
+4. Integrate at boundary contracts (API/schema/message) after domain-level checks are complete.
+
+## Universal No-Skip Rule
+
+For every command type (`review`, `validate`, `test`, `write`, `rewrite`, `refactor`, and others):
+- domain phases must still execute in required order for that mode
+- phases may be marked `NO-OP` with reason when mode does not require generation
+- phase `SKIPPED` is forbidden
+- each phase requires user validation before next phase starts
+- phase jumps or merged multi-phase execution are forbidden
 
 ## Backend Reference
 
 For any backend-involved feature, run backend sequence from:
 - `backend/AGENTS.md` or `codebase-architecture-guidelines/backend/AGENTS.md`
 
-Backend-local gates and traceability requirements are mandatory and not optional in multi-domain mode.
+Backend-local gates are mandatory and not optional in multi-domain mode.
 
 ## Conflict Rule
 

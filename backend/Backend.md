@@ -164,7 +164,6 @@ Companion files:
 - `backend/Dependency-Boundaries.md` or `codebase-architecture-guidelines/backend/Dependency-Boundaries.md`
 - `backend/Architecture-Patterns.md` or `codebase-architecture-guidelines/backend/Architecture-Patterns.md`
 - `backend/Test_Backend.md` or `codebase-architecture-guidelines/backend/Test_Backend.md`
-- `backend/Test-Traceability.md` or `codebase-architecture-guidelines/backend/Test-Traceability.md`
 - `backend/Refactoring.md` or `codebase-architecture-guidelines/backend/Refactoring.md`
 - `backend/Feature-Contracts.md` or `codebase-architecture-guidelines/backend/Feature-Contracts.md`
 - `backend/AGENTS.md` or `codebase-architecture-guidelines/backend/AGENTS.md`
@@ -179,10 +178,9 @@ When rules overlap, apply documents in this order:
 3. `backend/Dependency-Boundaries.md` (or copied path equivalent)
 4. `backend/Module-Boundaries.md` (or copied path equivalent)
 5. `backend/Test_Backend.md` (or copied path equivalent)
-6. `backend/Test-Traceability.md` (or copied path equivalent)
-7. `backend/Refactoring.md` (or copied path equivalent)
-8. `backend/AGENTS.md` (or copied path equivalent)
-9. `backend/Backend.md` (or copied path equivalent)
+6. `backend/Refactoring.md` (or copied path equivalent)
+7. `backend/AGENTS.md` (or copied path equivalent)
+8. `backend/Backend.md` (or copied path equivalent)
 
 Interpretation rule:
 - `Backend.md` governs structure and placement.

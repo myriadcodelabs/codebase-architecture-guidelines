@@ -92,17 +92,6 @@ Recommended related files:
 
 The exact folder may differ per project, but the project must keep feature contracts visible and version-controlled.
 
-Backend traceability mapping (this guideline set):
-- If project uses backend markdown trace artifacts, map visibility/test planning outputs to:
-  - `backend/test-trace/plans/<FEATURE_ID>.plan.md`
-  - `backend/test-trace/final/<FEATURE_ID>.final.md`
-  - `backend/test-trace/changes/<FEATURE_ID>.changes.md`
-- YAML and markdown formats are both acceptable if mapping is explicit and complete.
-- A project must choose one primary trace mode per feature:
-  - Mode A: `.featureflow/...` YAML/JSON artifacts
-  - Mode B: `backend/test-trace/...` markdown artifacts
-- Mixed partial modes for the same feature are forbidden unless explicit mapping is documented.
-
 ---
 
 ## Required Contract Fields
@@ -269,7 +258,7 @@ The visibility layer must allow a human or coding agent to inspect:
 - code modules implementing each behavior
 - likely affected tests when code changes
 
-The visibility layer must be generated from canonical artifacts in the selected trace mode.
+The visibility layer must be generated from canonical YAML/JSON artifacts.
 
 Diagrams such as Mermaid or PlantUML are views, not the source of truth.
 
@@ -279,27 +268,25 @@ Diagrams such as Mermaid or PlantUML are views, not the source of truth.
 
 When asked to design, test, or implement a non-trivial backend feature, the LLM must:
 
-1. Create or update feature contract artifact (for example: `feature.contract.yaml`).
-2. Create or update test planning artifact:
-   - Mode A: `test.plan.yaml`
-   - Mode B: `backend/test-trace/plans/<FEATURE_ID>.plan.md`
+1. Create or update `feature.contract.yaml`.
+2. Create or update `test.plan.yaml`.
 3. Create or update fixtures or example data.
-4. Create or update traceability final artifact:
-   - Mode A: `traceability.report.yaml`
-   - Mode B: `backend/test-trace/final/<FEATURE_ID>.final.md`
-5. Create or update test landscape change artifact:
-   - Mode A: registry/report updates
-   - Mode B: `backend/test-trace/changes/<FEATURE_ID>.changes.md`
-6. Define direct behavior tests before integration or system tests.
-7. Justify every mock.
-8. Generate tests from the contract.
-9. Generate production code only after tests are planned.
-10. Update visibility projections (diagrams/maps) where used.
-11. Produce a human-review summary.
+4. Create or update `visibility/system-behavior.yaml`.
+5. Create or update `visibility/feature-flow.mmd`.
+6. Create or update `visibility/requirement-test-map.mmd`.
+7. Create or update `visibility/test-code-map.mmd`.
+8. Define direct behavior tests before integration or system tests.
+9. Justify every mock.
+10. Generate tests from the contract.
+11. Generate production code only after tests are planned.
+12. Update `test-registry.json`.
+13. Update `traceability.report.yaml`.
+14. Update the visibility layer after tests or implementation change.
+15. Produce a human-review summary.
 
-The LLM must not claim that a non-trivial feature is planned unless selected planning/visibility artifacts exist.
+The LLM must not claim that a non-trivial feature is planned unless the visibility files exist.
 
-The LLM must not claim that a non-trivial feature is complete unless selected trace artifacts and visibility layer are updated.
+The LLM must not claim that a non-trivial feature is complete unless the registry, traceability report, and visibility layer are updated.
 ---
 
 ## Final Invariant
@@ -314,17 +301,17 @@ A backend feature is ready only when:
 - mocks are justified
 - implementation maps to tested behavior
 - visibility artifacts show what the system does
-- future affected tests can be identified from trace artifacts
+- future affected tests can be identified from the registry
 
 ---
 
-## Mandatory Trace Artifact Generation
+## Mandatory FeatureFlow Artifact Generation
 
-For every non-trivial backend feature, the LLM must generate actual version-controlled trace artifacts.
+For every non-trivial backend feature, the LLM must generate actual version-controlled FeatureFlow artifacts.
 
 The feature must not remain only in chat, prose, comments, or generated source code.
 
-Mode A (`.featureflow`) required artifacts are:
+The required artifacts are:
 
 ```text
 .featureflow/features/<feature-id>/
@@ -338,7 +325,7 @@ Mode A (`.featureflow`) required artifacts are:
     test-code-map.mmd
 ```
 
-Mode A also requires:
+After tests and implementation are generated, the LLM must also create or update:
 
 ```text
 .featureflow/features/<feature-id>/
@@ -348,15 +335,7 @@ Mode A also requires:
   test-registry.json
 ```
 
-Mode B (`backend/test-trace`) required artifacts are:
-
-```text
-backend/test-trace/plans/<FEATURE_ID>.plan.md
-backend/test-trace/final/<FEATURE_ID>.final.md
-backend/test-trace/changes/<FEATURE_ID>.changes.md
-```
-
-These files are mandatory for every non-trivial feature in the selected mode.
+These files are mandatory for every non-trivial feature.
 
 If the files do not exist, the LLM must create them.
 
@@ -366,13 +345,13 @@ If the files already exist, the LLM must update them instead of creating disconn
 
 ## Canonical Behavior Source Rule
 
-The canonical source of truth for feature behavior must be explicit and version-controlled in selected trace mode.
+The canonical source of truth for feature behavior must be YAML or JSON.
 
-Mermaid, PlantUML, SVG, PNG, or dashboard views are visual projections of canonical artifacts.
+Mermaid, PlantUML, SVG, PNG, or dashboard views are visual projections of the canonical YAML/JSON artifacts.
 
 The LLM must not create diagrams as independent undocumented artifacts.
 
-Mode A canonical files are:
+The required canonical files are:
 
 ```text
 feature.contract.yaml
@@ -382,7 +361,7 @@ test-registry.json
 traceability.report.yaml
 ```
 
-Mode A visual files are:
+The required visual files are:
 
 ```text
 visibility/feature-flow.mmd
@@ -396,14 +375,6 @@ Optional visual files may also be generated:
 visibility/feature-flow.puml
 visibility/requirement-test-map.puml
 visibility/test-code-map.puml
-```
-
-Mode B canonical files are:
-
-```text
-backend/test-trace/plans/<FEATURE_ID>.plan.md
-backend/test-trace/final/<FEATURE_ID>.final.md
-backend/test-trace/changes/<FEATURE_ID>.changes.md
 ```
 
 The visibility layer must allow a human or coding agent to inspect:
@@ -628,7 +599,7 @@ Mermaid and PlantUML diagrams must be generated from this behavior graph wheneve
 
 When asked to design or plan a non-trivial backend feature, the LLM must stop after generating the planning and visibility artifacts unless the user explicitly asks for tests or implementation.
 
-Mode A planning phase output must include:
+The planning phase output must include:
 
 ```text
 .featureflow/features/<feature-id>/feature.contract.yaml
@@ -638,12 +609,6 @@ Mode A planning phase output must include:
 .featureflow/features/<feature-id>/visibility/feature-flow.mmd
 .featureflow/features/<feature-id>/visibility/requirement-test-map.mmd
 .featureflow/features/<feature-id>/visibility/test-code-map.mmd
-```
-
-Mode B planning phase output must include:
-
-```text
-backend/test-trace/plans/<FEATURE_ID>.plan.md
 ```
 
 After generating these files, the LLM must explain what the human should review before tests or implementation are generated.

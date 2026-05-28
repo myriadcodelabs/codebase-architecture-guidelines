@@ -1,7 +1,7 @@
 # Backend Orchestration Instructions
 (Backend-Local Full Feature Execution Path)
 
-This file defines full sequence for backend feature generation.
+This file defines strict sequence for backend feature work.
 
 Path note:
 - In this source repo, use `backend/...`.
@@ -13,109 +13,103 @@ Companion docs used in order:
 3. `backend/Dependency-Boundaries.md` or `codebase-architecture-guidelines/backend/Dependency-Boundaries.md`
 4. `backend/Module-Boundaries.md` or `codebase-architecture-guidelines/backend/Module-Boundaries.md`
 5. `backend/Test_Backend.md` or `codebase-architecture-guidelines/backend/Test_Backend.md`
-6. `backend/Test-Traceability.md` or `codebase-architecture-guidelines/backend/Test-Traceability.md`
-7. `backend/Refactoring.md` or `codebase-architecture-guidelines/backend/Refactoring.md`
+6. `backend/Refactoring.md` or `codebase-architecture-guidelines/backend/Refactoring.md`
+
+## Universal Command Modes (Mandatory)
+
+Modes:
+- `review` / `validate` / `analyze`: no code generation.
+- `test-only`: test work only, no production code generation.
+- `write` / `rewrite` / `implement` / `feature`: full generation flow.
+- `refactor-only`: behavior-preserving structural changes only.
+
+Mode-to-phase requirements:
+- `review`/`validate`/`analyze`: phases 0,1,2,3,5 required; phase 4 = `NO-OP`; phase 6 conditional.
+- `test-only`: phases 0,1,2,3,4,5 required; phase 4 limited to tests.
+- `write`/`rewrite`/`implement`/`feature`: phases 0,1,2,3,4,5 required; phase 6 conditional.
+- `refactor-only`: phases 0,2,3,5,6 required; phase 1 optional if no behavior changes.
+
+Rules:
+- Each phase status must be `DONE` or `NO-OP`.
+- `SKIPPED` is forbidden.
+- Every `NO-OP` needs explicit reason.
+- User validation required after each phase.
+- Next phase blocked until current phase is approved.
+- Phase jumps or merged multi-phase execution forbidden.
 
 ## Phase 0: Intake
 
-1. Read feature request and identify capability boundary.
-2. Decide if change is feature work or refactor-only work.
-3. If behavior changes, use full feature flow below.
+1. Read request and identify capability boundary.
+2. Classify mode (`review`/`test-only`/`write`/`refactor-only`...).
+3. State expected impacted layers/modules.
 
 Gate:
-- No implementation before phase classification is explicit.
+- No next phase until phase-0 output approved.
 
-## Phase 1: Feature Contract (Before Architecture and Tests)
+## Phase 1: Feature Contract
 
-1. Create/update feature contract per `Feature-Contracts.md`.
-2. Ensure required fields exist (flow, requirements, test strategy, mock policy, visibility links).
-3. Ensure each behavior step is testable and maps to a boundary/component.
+1. Create/update feature contract per `Feature-Contracts.md` when mode requires it.
+2. Ensure required fields exist and behavior is testable.
 
 Gate:
-- No architecture or code generation before feature contract exists.
+- No architecture or generation work until phase-1 output approved (when phase-1 required).
 
-## Phase 2: Architecture Planning (Derived from Contract)
+## Phase 2: Architecture Planning
 
-1. Map placement using `Backend.md` and `Module-Boundaries.md`:
-   - target module
-   - target layer (`api`, `application`, `domain`, `infrastructure`, `contracts`, `shared`)
+1. Place changes by module/layer using `Backend.md` and `Module-Boundaries.md`.
 2. Validate dependency direction using `Dependency-Boundaries.md`.
-3. Validate pattern fit using `Architecture-Patterns.md`:
-   - DDD boundary ownership
-   - ports/adapters placement
-   - optional CQRS decision (if relevant)
-4. List architecture decisions in feature notes:
-   - what new/changed files are expected by layer
-   - which ports/adapters are introduced or reused
+3. Validate pattern fit using `Architecture-Patterns.md`.
 
 Gate:
-- No test or code generation until architecture placement and dependency direction are clear.
+- No test/code generation until phase-2 output approved.
 
-## Phase 3: Test Intent Planning (Visibility Layer, Before Code)
+## Phase 3: Test Planning
 
-1. Create `backend/test-trace/plans/<FEATURE_ID>.plan.md` or `codebase-architecture-guidelines/backend/test-trace/plans/<FEATURE_ID>.plan.md`.
-2. Define planned tests from contract behavior:
-   - top-down behavior mapping
-   - inside-out execution order
-3. For each planned test include:
-   - intent
-   - input example
-   - expected output example
-   - planned file path
-   - change kind (`added`/`modify-candidate`/`remove-candidate`)
-4. If any existing test may be modified or removed, record it in phase-3 plan before generation.
+1. Define planned tests from declared behavior.
+2. Plan inside-out execution order:
+   - unit collaborator guarantees
+   - integration composition guarantees
+   - contract/boundary guarantees
+   - system/non-functional guarantees when risk requires
+3. If existing tests must change/remove, declare that before generation.
 
 Gate:
-- No code generation before plan file is complete.
-- No test modify/remove unless it was declared in phase-3 plan.
+- No generation until phase-3 output approved.
 
 ## Phase 4: Generation and Implementation
 
-Generate tests and code in inside-out sequence:
-1. Unit tests for feature collaborators (not private helper internals unless behavior-critical).
-2. Integration tests for use-case composition.
-3. Contract tests for API/event/storage boundaries.
-4. System/non-functional tests when feature risk requires.
-5. Implement code to satisfy planned tests while preserving boundary rules.
+1. Generate tests in planned inside-out order.
+2. Implement code to satisfy declared/planned tests.
+3. Preserve architecture boundaries during edits.
 
-Architecture checks during implementation:
-- no forbidden dependency direction
-- no domain/application direct concrete infrastructure usage
-- module ownership remains explicit
+Mode gate:
+- `review`/`validate`/`analyze`: phase 4 must be `NO-OP`.
 
-## Phase 5: Finalize Test Traceability Artifacts
+Gate:
+- No next phase until phase-4 output (or NO-OP rationale) approved.
 
-1. Update `backend/test-trace/final/<FEATURE_ID>.final.md` or `codebase-architecture-guidelines/backend/test-trace/final/<FEATURE_ID>.final.md`:
-   - planned-to-final mapping
-   - finalized tests with I/O examples
-   - status (`added`/`modified`/`unchanged`/`removed`)
-2. Update `backend/test-trace/changes/<FEATURE_ID>.changes.md` or `codebase-architecture-guidelines/backend/test-trace/changes/<FEATURE_ID>.changes.md`:
-   - added tests
-   - modified tests with semantic deltas
-   - removed tests with reason
-   - indirect impacts
+## Phase 5: Finalization
 
-Gates:
-- No planned test may disappear without explicit reason.
-- No unplanned generated test without explicit reason.
-- No test removal/semantic weakening without explicit reason.
-- No modified/removed test unless it appeared in phase-3 plan as candidate.
+1. Produce final summary of what tests were added/modified/removed and why.
+2. Produce final summary of code changes and boundary impact.
+3. Confirm planned behavior-to-test mapping is complete.
+
+Gate:
+- No next phase until phase-5 output approved.
 
 ## Phase 6: Refactor Safety Check (When Applicable)
 
-If structural cleanup occurred, apply `Refactoring.md` checks:
-- behavior preserved
-- contracts unchanged unless explicitly approved
-- boundaries improved or preserved
+1. If refactor occurred, validate behavior preservation and no contract drift.
+2. If behavior-preserving refactor impossible, escalate.
 
 Gate:
-- If behavior-preserving refactor impossible, escalate for human decision.
+- No completion until phase-6 output (or NO-OP rationale) approved.
 
 ## Definition of Done
 
-Feature is complete only when:
-- architecture placement and dependency direction are explicit
-- feature contract exists and is coherent
-- plan trace file exists before code generation
-- final and changes trace files explain resulting tests without reading code
-- boundary and refactor invariants are not violated
+Work complete only when:
+- required phases for mode are done
+- no skipped phases
+- phase order respected
+- each required phase approved
+- boundaries and behavior guarantees preserved

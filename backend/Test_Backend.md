@@ -31,10 +31,6 @@ This document does **not**:
 - define coverage targets
 - prescribe mocking libraries or styles
 
-Companion traceability rule:
-- test planning and test-change visibility artifacts are defined in `backend/Test-Traceability.md`.
-- those artifacts are mandatory for backend feature work.
-
 ---
 
 ## Terminology Neutrality
@@ -294,11 +290,9 @@ Default rule:
 3. Fix production code
 
 Test intent change policy:
-- changes to test intent must be declared during planning in `backend/test-trace/plans/<FEATURE_ID>.plan.md`
-- modified/removed tests must be listed as `modify-candidate` or `remove-candidate` in phase-3 planning
-- final outcome and reason must be recorded in:
-  - `backend/test-trace/final/<FEATURE_ID>.final.md`
-  - `backend/test-trace/changes/<FEATURE_ID>.changes.md`
+- changes to test intent must be declared during planning before generation
+- modified/removed tests must be explicitly listed in planning output
+- final outcome and reason must be documented in final review output
 
 ---
 
@@ -347,7 +341,7 @@ Mocking vs real behavior is decided **after** this question.
 
 ---
 
-### Rule Correctness Tests
+### Default Policy (Real Behavior First)
 
 - Prefer **real behavior**
 - Avoid mocks
@@ -358,11 +352,13 @@ Mocking business-core logic is forbidden.
 
 ---
 
-### Composition Tests
+## Mocking Prohibitions
 
-- Mock **trusted boundaries only**
-- Each mock represents an already-tested behavior
-- Assert outcomes, not implementation details
+LLMs must not:
+- mock the unit under test
+- mock business-core rules or validators
+- mock persistence when persistence semantics are the behavior
+- mock contract boundaries when contract correctness is the behavior
 
 ---
 
@@ -373,13 +369,11 @@ Mocking business-core logic is forbidden.
 
 ---
 
-## Mocking Prohibitions
+### Mocking Exceptions (When Allowed)
 
-LLMs must not:
-- mock the unit under test
-- mock business-core rules or validators
-- mock persistence when persistence semantics are the behavior
-- mock contract boundaries when contract correctness is the behavior
+- Mock **trusted boundaries only**
+- Each mock represents an already-tested behavior
+- Assert outcomes, not implementation details
 
 ---
 
