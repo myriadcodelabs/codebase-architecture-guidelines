@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Architecture Guidelines"
+  short_description: "Frontend structure, tests, and refactor rules"
+  default_prompt: "Use $frontend-architecture-guidelines to plan and implement a frontend feature with strict architecture boundaries."
