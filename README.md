@@ -81,6 +81,94 @@ Each command copies selected directories into:
 codebase-guidelines copy backend --force
 ```
 
+## Codex Skill Installation
+
+This repository also includes an installable frontend Codex skill:
+
+```text
+skills/frontend-architecture-guidelines/
+```
+
+The skill converts the `frontend/` rules into Codex Skill format. Backend and browser extension rules are not converted into skills yet.
+
+### Option 1: Install As A Repo Skill
+
+Use this when you want the skill available only inside one target repository.
+
+From the target repository root:
+
+```bash
+mkdir -p .agents/skills
+cp -R /path/to/codebase-architecture-guidelines/skills/frontend-architecture-guidelines .agents/skills/
+```
+
+Restart Codex in VS Code, Cursor, or the Codex CLI. Then invoke the skill with:
+
+```text
+$frontend-architecture-guidelines
+```
+
+Codex also scans `.agents/skills` in parent directories up to the repository root, so place the skill at the narrowest scope that should use it.
+
+### Option 2: Install As A Personal Skill
+
+Use this when you want the skill available across all repositories on your machine.
+
+```bash
+mkdir -p ~/.agents/skills
+cp -R skills/frontend-architecture-guidelines ~/.agents/skills/
+```
+
+Restart Codex. Then invoke:
+
+```text
+$frontend-architecture-guidelines
+```
+
+### Option 3: Package As A Local Plugin
+
+Use this when you want to install the guidelines through the Codex/ChatGPT plugin flow or share them as a plugin.
+
+Create `.codex-plugin/plugin.json` at this repository root:
+
+```json
+{
+  "name": "codebase-architecture-guidelines",
+  "version": "0.1.0",
+  "description": "Frontend architecture, testing, and refactoring guidelines.",
+  "skills": "./skills/"
+}
+```
+
+Create `.agents/plugins/marketplace.json` at this repository root:
+
+```json
+{
+  "name": "local-codebase-architecture-guidelines",
+  "interface": {
+    "displayName": "Local Codebase Architecture Guidelines"
+  },
+  "plugins": [
+    {
+      "name": "codebase-architecture-guidelines",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+Restart the ChatGPT desktop app or Codex host, open the Plugins directory, select the local marketplace, and install `codebase-architecture-guidelines`.
+
+For VS Code and Cursor, the repo or personal skill install is usually simpler than plugin installation.
+
 ## Adaptations and Sharing
 
 - Pull requests are optional. You are not required to contribute changes back to this repository.
